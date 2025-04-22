@@ -23,7 +23,7 @@ const customReadFile = (file, res) => {
 
 router.get("/", (req, res) => {
     res.writeHead(httpStatusCodes.OK, plainTextContentType);
-    res.end("INDEX");//plain text
+    res.end("inprogress of being made");//plain text
 });
 
 router.get("/index.html", (req, res) => {
