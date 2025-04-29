@@ -1,31 +1,46 @@
 "use strict";
 
-const express = require("express"),
-  app = express(),
-  errorController = require("./controllers/errorController"),
-  homeController = require("./controllers/homeController"),
-  layouts = require("express-ejs-layouts"),
-  mongoose = require("mongoose"),
-  Subscriber = require("./models/subscriber");
+const express = require("express");
+const app = express();
+const errorController = require("./controllers/errorController");
+const homeController = require("./controllers/homeController");
+const layouts = require("express-ejs-layouts");
+const mongoose = require("mongoose");
+const Subscriber = require("./models/subscriber");
 
-mongoose.connect(
-  "mongodb://localhost:27017/recipe_db",
+//connecting to database
+mongoose.connect("mongodb://0.0.0.0:27017/recipe_db",
   { useNewUrlParser: true }
 );
-mongoose.set("useCreateIndex", true);
+
 const db = mongoose.connection;
 
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
+
 });
 
-var myQuery = Subscriber.findOne({
-  name: "Jon Wexler"
-}).where("email", /wexler/);
+//CREATING DOCUMENTS TO SAVE TO DB
+//promises
+Subscriber.create({
+  name: "Jada Mathele",
+  email: "jada@mathele.com"
+})
+  .then((savedDoc) => {
+    console.log(savedDoc);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
-myQuery.exec((error, data) => {
-  if (data) console.log(data.name);
-});
+const query = Subscriber.find({ name: "Jada Mathele" }).exec();
+query
+  .then(docs => {
+    console.log(docs); // Handle the results
+  })
+  .catch(err => {
+    console.error(err); // Handle errors
+  });
 
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
@@ -34,7 +49,7 @@ app.use(express.static("public"));
 app.use(layouts);
 app.use(
   express.urlencoded({
-    extended: false
+    extended: false,
   })
 );
 app.use(express.json());
