@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 const Subscriber = require("./models/subscriber");
 
 //connecting to database
-mongoose.connect("mongodb://0.0.0.0:27017/recipe_db",
+mongoose.connect("mongodb://0.0.0.0:27017/recipe_app",
   { useNewUrlParser: true }
 );
 
